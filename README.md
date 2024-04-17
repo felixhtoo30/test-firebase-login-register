@@ -1,5 +1,5 @@
 # ===== Test Firebase Login Register =====
-This project is about testing the Firebase Login Register a.k.a TFLR
+This project is about testing the Firebase Login Register (a.k.a) TFLR
 
 <br/>
 
@@ -26,6 +26,7 @@ docker compose up
 # If you have changes in code contents, use the '--build' flag:
 docker compose up --build
 ```
+  
 ### Available Pages to view:
 - `localhost:8003/login/`
 - `localhost:8003/register/`
@@ -42,21 +43,21 @@ npm install
 ```
 - Run the following docker command to execute the file `docker-compose.yml`:
 ```bash
-docker compose up
+  docker compose up
 
-# If you have changes in code contents, use the '--build' flag:
-docker compose up --build
+  # If you have changes in code contents, use the '--build' flag:
+  docker compose up --build
 ```
+
 ### Available API Endpoints to check:
 - `http://localhost:8002/user/save` [method: `POST`]
   - which will save the user record at database. Here is the Request `body` sample:
-    ```JSON
-    
-    {
-        "email": "abc@def.com",
-        "firebase_uid": "4Eqtw1gTiKh47ULBREzvlVi5Vzj1"
-    }
-    ```
+  ```JSON
+  {
+      "email": "abc@def.com",
+      "firebase_uid": "4Eqtw1gTiKh47ULBREzvlVi5Vzj1"
+  }
+  ```
 - `http://localhost:8001/user` [method: `GET`]
   - which will show the user record (recommends to test at **POSTMAN**).
 
