@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  react-front:
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    container_name: tflr-frontend
+    ports:
+      - '8003:8003'
+    environment:
+      VITE_BACKEND_API_URL: http://localhost:8002
+      VITE_SERVER_PORT: 8003
+      VITE_PREVIEW_PORT: 8003

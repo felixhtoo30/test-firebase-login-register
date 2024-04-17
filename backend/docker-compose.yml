@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  nest-api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: tflr-backend-nest
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@postgres-db:5432/tflr-db
+    ports:
+      - '8002:3000'
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./src:/app/backend/src
+
+  postgres-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tflr-db
+    container_name: tflr-postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - '8001:5432'
+      
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   container_name: tflr-pgadmin4
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=htooant.dev@gmail.com
+  #     - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+  #   ports:
+  #     - '5050:80'
+  #   depends_on:
+  #     - db
