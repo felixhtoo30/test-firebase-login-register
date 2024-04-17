@@ -1,26 +1,17 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RegisterUserDto } from './dto/register-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { SaveUserDto } from './dto/save-user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   /*
-   * POST http://localhost:3000/user/register
+   * POST http://localhost:3000/user/save
    */
-  @Post('/register')
-  register(@Body() registerUserDto: RegisterUserDto) {
-    return this.userService.register(registerUserDto);
-  }
-
-  /*
-   * POST http://localhost:3000/user/login
-   */
-  @Post('/login')
-  login(@Body() loginUserDto: LoginUserDto) {
-    return this.userService.login(loginUserDto);
+  @Post('/save')
+  save(@Body() saveUserDto: SaveUserDto) {
+    return this.userService.save(saveUserDto);
   }
 
   /*

@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { RegisterUserDto } from './dto/register-user.dto';
+import { SaveUserDto } from './dto/save-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UserService {
@@ -11,24 +10,27 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
-  async register(registerUserDto: RegisterUserDto) {
-    const user: User = new User();
-    user.email = registerUserDto.email;
-    user.firebase_uid = registerUserDto.firebase_uid;
-    user.last_login = new Date();
-    return await this.userRepository.save(user);
-  }
-
-  async login(loginUserDto: LoginUserDto) {
-    const foundUser = await this.userRepository.findOne({
+  async save(saveUserDto: SaveUserDto) {
+    const existingUser = await this.userRepository.findOne({
       where: {
-        firebase_uid: loginUserDto.firebase_uid,
-        email: loginUserDto.email,
+        firebase_uid: saveUserDto.firebase_uid,
+        email: saveUserDto.email,
       },
     });
-    return await this.userRepository.update(foundUser.id, {
-      last_login: new Date(),
-    });
+    if (existingUser !== null) {
+      const user = {
+        email: saveUserDto.email,
+        firebase_uid: saveUserDto.firebase_uid,
+        last_login: new Date(),
+      };
+      return await this.userRepository.save(user);
+    } else {
+      const user: User = new User();
+      user.email = saveUserDto.email;
+      user.firebase_uid = saveUserDto.firebase_uid;
+      user.last_login = new Date();
+      return await this.userRepository.save(user);
+    }
   }
 
   async findAll() {

@@ -11,7 +11,6 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [LoggedInInfo, setLoggedInInfo] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -19,12 +18,14 @@ const Login = () => {
       setIsSigningIn(true);
       await doSignIn(email, password)
         .then((userCredential) => {
-          setLoggedInInfo(userCredential.user);
+          saveUserData(userCredential.user.email, userCredential.user.uid);
         })
         .catch((error) => {
           const errorCode = error.code;
           // const errorMessage = error.message;
           // console.log(errorCode);
+
+          /* Make the default errorCode to be user-readable */
           setErrorMessage(errorCode.replace(/(auth\/)|-/g, " ").trim());
           setIsSigningIn(false);
         });
@@ -76,9 +77,9 @@ const Login = () => {
             </div>
 
             {errorMessage && (
-              <span className="text-red-600 font-bold mt-2">
+              <p className="text-red-600 font-bold mt-2 first-letter:uppercase">
                 {errorMessage}
-              </span>
+              </p>
             )}
 
             <button

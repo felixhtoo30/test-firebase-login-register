@@ -19,17 +19,25 @@ const Register = () => {
     e.preventDefault();
     if (!isRegistering) {
       setIsRegistering(true);
-      await doCreateUser(email, password)
-        .then((userCredential) => {
-          saveUserData(userCredential.user.email, userCredential.user.uid);
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          // const errorMessage = error.message;
-          // console.log(errorCode);
-          setErrorMessage(errorCode.replace(/(auth\/)|-/g, " ").trim());
-          setIsRegistering(false);
-        });
+
+      if (password && confirmPassword && password === confirmPassword) {
+        await doCreateUser(email, password)
+          .then((userCredential) => {
+            saveUserData(userCredential.user.email, userCredential.user.uid);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            // const errorMessage = error.message;
+            // console.log(errorMessage);
+
+            /* Make the default errorCode to be user-readable */
+            setErrorMessage(errorCode.replace(/(auth\/)|-/g, " ").trim());
+            setIsRegistering(false);
+          });
+      } else {
+        setErrorMessage("password and confirm password must be same");
+        setIsRegistering(false);
+      }
     }
   };
 
@@ -96,9 +104,9 @@ const Register = () => {
             </div>
 
             {errorMessage && (
-              <span className="text-red-600 font-bold mt-2 normal-case">
+              <p className="text-red-600 font-bold mt-2 first-letter:uppercase">
                 {errorMessage}
-              </span>
+              </p>
             )}
 
             <button
