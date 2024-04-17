@@ -17,20 +17,14 @@ export class UserService {
         email: saveUserDto.email,
       },
     });
+    const user: User = new User();
     if (existingUser !== null) {
-      const user = {
-        email: saveUserDto.email,
-        firebase_uid: saveUserDto.firebase_uid,
-        last_login: new Date(),
-      };
-      return await this.userRepository.save(user);
-    } else {
-      const user: User = new User();
-      user.email = saveUserDto.email;
-      user.firebase_uid = saveUserDto.firebase_uid;
-      user.last_login = new Date();
-      return await this.userRepository.save(user);
+      user.id = existingUser.id;
     }
+    user.email = saveUserDto.email;
+    user.firebase_uid = saveUserDto.firebase_uid;
+    user.last_login = new Date();
+    return await this.userRepository.save(user);
   }
 
   async findAll() {
